@@ -1,4 +1,4 @@
-# Order Management (Interview-friendly demo)
+# Order Management
 
 ## What you get
 - FastAPI backend (backend/)
@@ -28,3 +28,4 @@
 - In Vercel set env var: REACT_APP_API_BASE = https://<your-backend-url>
 
 (See full deployment steps in the next instructions.)
+
