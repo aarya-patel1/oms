@@ -10,12 +10,11 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Order Management Backend")
 
-# CORS - allow all for demo; in production restrict to frontend URL
+# CORS setup
 origins = os.getenv("FRONTEND_URLS", "*")
 if origins == "*" or origins == "":
     allow_origins = ["*"]
 else:
-    # comma separated
     allow_origins = [u.strip() for u in origins.split(",")]
 
 app.add_middleware(
@@ -75,8 +74,6 @@ def place_order(payload: schemas.OrderCreate, db: Session = Depends(get_db)):
     db.add(order)
     db.commit()
     db.refresh(order)
-    # Simulate event publish (in real system we'd send to RabbitMQ)
-    # We'll log to console (this helps explaining message-queue in interview)
     print(f"[EVENT] OrderCreated -> order_id={order.id} product_id={order.product_id} qty={order.quantity}")
     return order
 
@@ -93,3 +90,23 @@ def ship_order(order_id: int, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(order)
     return order
+
+@app.put("/products/{product_id}/restock", response_model=schemas.ProductOut)
+def restock_product(product_id: int, stock: int, db: Session = Depends(get_db)):
+    product = db.query(models.Product).filter(models.Product.id == product_id).first()
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    product.stock = stock
+    db.commit()
+    db.refresh(product)
+    return product
+
+
+# --------------------
+# Shipment Metrics API
+# Endpoint to get count of shipped orders (shipments)
+@app.get("/shipments/count")
+def get_shipment_count(db: Session = Depends(get_db)):
+    shipment_count = db.query(models.Order).filter(models.Order.status == "Shipped").count()
+    return {"shipment_count": shipment_count}
+

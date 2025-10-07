@@ -34,7 +34,7 @@ export default function Orders() {
         <button onClick={placeOrder} style={{marginLeft:8}}>Place Order</button>
       </div>
 
-      <table border="1" cellPadding="6">
+      <table border={1} cellPadding={6} cellSpacing={0} style={{ width: "70%", maxwidth: "800px",fontsize: "1.2rem"}}>
         <thead><tr><th>ID</th><th>Product ID</th><th>Qty</th><th>Status</th><th>Total</th></tr></thead>
         <tbody>
           {orders.map(o => <tr key={o.id}><td>{o.id}</td><td>{o.product_id}</td><td>{o.quantity}</td><td>{o.status}</td><td>{o.total_price}</td></tr>)}
