@@ -22,10 +22,8 @@
 - Mark shipped → Shipping page
 
 ## Deploy
-- Push repo to GitHub.
-- Deploy backend to Render (choose backend as root).
-- Deploy frontend to Vercel (choose frontend as root).
-- In Vercel set env var: REACT_APP_API_BASE = https://<your-backend-url>
+
 
 (See full deployment steps in the next instructions.)
+
 
