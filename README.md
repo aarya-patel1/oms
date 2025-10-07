@@ -24,6 +24,4 @@
 ## Deploy
 
 
-(See full deployment steps in the next instructions.)
-
 
